@@ -115,6 +115,7 @@ public class FXMLController {
     
   public void setModel(Dictionary model) {
     	
+	  
     	txtDaCorreggere.setDisable(true);
     	txtDaCorreggere.setText("Selezionare una lingua");
     	
