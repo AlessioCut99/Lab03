@@ -2,6 +2,10 @@ package it.polito.tdp.spellchecker;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+
+import java.net.URL;
+
+import it.polito.tdp.spellchecker.model.Dictionary;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,17 +16,27 @@ public class EntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-        
+       
+    	Dictionary model = new Dictionary();
+    	FXMLController controller;
+    	
+    	FXMLLoader loader =new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+    	Parent root = loader.load();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
+        
+        controller = loader.getController();
+        controller.setModel(model);
         
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
     }
 
-    /**
+   /* private FXMLController FXMLLoader(URL resource) {
+		return null;
+	}
+	*/
+	/**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
      * launched through deployment artifacts, e.g., in IDEs with limited FX

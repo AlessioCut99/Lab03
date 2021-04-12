@@ -8,8 +8,10 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
+import it.polito.tdp.spellchecker.model.RichWord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +23,9 @@ public class FXMLController {
 	
 	private Dictionary dizionario;
 	private List<String> inputTextList;
+	
+	private final static boolean dichotomicSearch = true;
+	private final static boolean linearSearch = false;
 	
 
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -98,7 +103,51 @@ public class FXMLController {
     		txtDaCorreggere.setText("Errore nel caricamento del dizionario! ");
     		return;
     	}
-
+    	
+    	String inputText = txtDaCorreggere.getText();
+    	
+    	if(inputText.isEmpty())  {
+    		txtDaCorreggere.setText("Inserire un testo da correggere!");
+    		return;
+    	}
+    	
+    	inputText = inputText.replaceAll("\n", " ");
+		inputText = inputText.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]?]", "");
+    	
+    	StringTokenizer st = new StringTokenizer(inputText, " ");
+    	
+    	while( st.hasMoreTokens()) {
+    		inputTextList.add(st.nextToken());
+    	}
+    	
+    	long start = System.nanoTime();
+    	//List<RichWord> outputTextList;
+    	//outputTextList = dizionario.spellCheckText(inputTextList);
+    	List<RichWord> outputTextList;
+		
+		
+		if (dichotomicSearch) {
+			outputTextList = dizionario.spellCheckTextDichotomic(inputTextList);
+		} else if (linearSearch) {
+			outputTextList = dizionario.spellCheckTextLinear(inputTextList);
+		} else {
+			outputTextList = dizionario.spellCheckText(inputTextList);
+		}
+    	
+    	long end= System.nanoTime();
+    	
+    	int numErrori= 0;
+    	StringBuilder richText = new StringBuilder();
+    	
+    	for( RichWord r: outputTextList) {
+    		if(!r.isCorrect()) {
+    			numErrori++;
+    			richText.append(r.getWord()+ "\n");
+    		}
+    	}
+    	txtCorretto.setText(richText.toString());
+    	lblErrori.setText("The text contains " +numErrori + " errors");
+    	lblStato.setText("Spell check completed in " +(end- start)/1e9 + " seconds");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

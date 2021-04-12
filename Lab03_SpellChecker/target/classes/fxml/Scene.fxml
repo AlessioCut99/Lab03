@@ -47,14 +47,14 @@
             <TextArea fx:id="txtCorretto" disable="true" prefHeight="133.0" prefWidth="318.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblErrori" textFill="RED">
+                  <Label fx:id="lblErrori" prefHeight="26.0" prefWidth="198.0" textFill="RED">
                      <HBox.margin>
                         <Insets right="35.0" />
                      </HBox.margin>
                   </Label>
                   <Button fx:id="bntClearText" disable="true" mnemonicParsing="false" onAction="#doClearText" prefHeight="26.0" prefWidth="90.0" text="Clear Text">
                      <HBox.margin>
-                        <Insets left="230.0" />
+                        <Insets left="30.0" />
                      </HBox.margin>
                   </Button>
                </children>
